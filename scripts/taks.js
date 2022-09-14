@@ -48,16 +48,22 @@ window.addEventListener('load', function () {
   /* -------------------------------------------------------------------------- */
   /*                    FUNCIÓN 4 - Crear nueva tarea [POST]                    */
   /* -------------------------------------------------------------------------- */
-
   addTask.addEventListener('submit', function (e) {
-
-
-
-
-
+    e.preventDefault();
+    fetch(url + '/tasks', {
+      method: 'post',
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        description: newTask.value,
+        completed: false
+      })
+    }).then(res => res.json()).then(data => {
+      console.log(data);
+    })
   });
-
-
   /* -------------------------------------------------------------------------- */
   /*                  FUNCIÓN 5 - Renderizar tareas en pantalla                 */
   /* -------------------------------------------------------------------------- */
