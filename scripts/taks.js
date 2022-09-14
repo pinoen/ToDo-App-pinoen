@@ -19,7 +19,18 @@ window.addEventListener('load', function () {
   /* -------------------------------------------------------------------------- */
   /*                 FUNCIÓN 2 - Obtener nombre de usuario [GET]                */
   /* -------------------------------------------------------------------------- */
-
+  function obtenerNombreUsuario() {
+    let token = localStorage.getItem('token');
+    fetch(url + '/getMe', {
+      method: 'get',
+      headers: {
+        'Authorization': token,
+      }
+    }).then(res => res.json()).then(data => {
+      userName.textContent = data.firstName + ' ' + data.lastName;
+    })
+  };
+  obtenerNombreUsuario();
   /* -------------------------------------------------------------------------- */
   /*                 FUNCIÓN 3 - Obtener listado de tareas [GET]                */
   /* -------------------------------------------------------------------------- */
