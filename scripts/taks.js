@@ -2,7 +2,8 @@
 /* ------ comienzan las funcionalidades una vez que carga el documento ------ */
 window.addEventListener('load', function () {
   /* ---------------- variables globales y llamado a funciones ---------------- */
-  let url = 'https://ctd-todo-api.herokuapp.com/v1/users';
+  let url = 'https://ctd-todo-api.herokuapp.com/v1';
+  let token = localStorage.getItem('token');
   let closeBtn = document.querySelector('#closeApp');
   let userName = document.querySelector('.user-info p');
   let addTask = document.querySelector('.nueva-tarea');
@@ -20,8 +21,7 @@ window.addEventListener('load', function () {
   /*                 FUNCIÓN 2 - Obtener nombre de usuario [GET]                */
   /* -------------------------------------------------------------------------- */
   function obtenerNombreUsuario() {
-    let token = localStorage.getItem('token');
-    fetch(url + '/getMe', {
+    fetch(url + '/users/getMe', {
       method: 'get',
       headers: {
         'Authorization': token,
@@ -35,14 +35,16 @@ window.addEventListener('load', function () {
   /*                 FUNCIÓN 3 - Obtener listado de tareas [GET]                */
   /* -------------------------------------------------------------------------- */
   function consultarTareas() {
-
-
-
-
-
+    fetch(url + '/tasks', {
+      method: 'get',
+      headers: {
+        'Authorization': token,
+      }
+    }).then(res => res.json()).then(data => {
+      console.log(data);
+    })
   };
-
-
+  consultarTareas();
   /* -------------------------------------------------------------------------- */
   /*                    FUNCIÓN 4 - Crear nueva tarea [POST]                    */
   /* -------------------------------------------------------------------------- */
