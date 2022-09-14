@@ -10,6 +10,8 @@ window.addEventListener('load', function () {
   let newTask = document.querySelector('#nuevaTarea');
   let pendingTasks = document.querySelector('.tareas-pendientes');
   let closedTasks = document.querySelector('.tareas-terminadas');
+  let numberClosedTasks = document.querySelector('#cantidad-finalizadas');
+  let tareas = [];
   /* -------------------------------------------------------------------------- */
   /*                          FUNCIÓN 1 - Cerrar sesión                         */
   /* -------------------------------------------------------------------------- */
@@ -41,10 +43,12 @@ window.addEventListener('load', function () {
         'Authorization': token,
       }
     }).then(res => res.json()).then(data => {
-      console.log(data);
+      data.forEach(item => {
+        tareas.push(item);
+      });
     })
   };
-  consultarTareas();
+
   /* -------------------------------------------------------------------------- */
   /*                    FUNCIÓN 4 - Crear nueva tarea [POST]                    */
   /* -------------------------------------------------------------------------- */
@@ -61,34 +65,31 @@ window.addEventListener('load', function () {
         completed: false
       })
     }).then(res => res.json()).then(data => {
-      console.log(data);
+      renderizarTareas(data);
     })
+    newTask.value = '';
   });
   /* -------------------------------------------------------------------------- */
   /*                  FUNCIÓN 5 - Renderizar tareas en pantalla                 */
   /* -------------------------------------------------------------------------- */
-  function renderizarTareas(listado) {
-
-
-
-
-
-
-
+  function renderizarTareas(obj) {
+    pendingTasks.innerHTML += `<li class='tarea'>
+                                <button class='change' id='${obj.id}'>
+                                  <i class='fa-regular fa-circle'></i>
+                                </button>
+                                <div class='description'>
+                                  <p class='nombre'>${obj.description}</p>
+                                  <p class='timestamp'>${obj.createdAt.slice(0, 10)}</p> 
+                                </div>  
+                              </li>`;
+    botonesCambioEstado();
   };
-
   /* -------------------------------------------------------------------------- */
   /*                  FUNCIÓN 6 - Cambiar estado de tarea [PUT]                 */
   /* -------------------------------------------------------------------------- */
   function botonesCambioEstado() {
 
-
-
-
-
   }
-
-
   /* -------------------------------------------------------------------------- */
   /*                     FUNCIÓN 7 - Eliminar tarea [DELETE]                    */
   /* -------------------------------------------------------------------------- */
