@@ -1,45 +1,31 @@
-// SEGURIDAD: Si no se encuentra en localStorage info del usuario
-// no lo deja acceder a la página, redirigiendo al login inmediatamente.
-
-
-
+// SEGURIDAD: Si no se encuentra en localStorage info del usuario no lo deja acceder a la página, redirigiendo al login inmediatamente.
 /* ------ comienzan las funcionalidades una vez que carga el documento ------ */
 window.addEventListener('load', function () {
-
   /* ---------------- variables globales y llamado a funciones ---------------- */
-  
-
-
+  let url = 'https://ctd-todo-api.herokuapp.com/v1/users';
+  let closeBtn = document.querySelector('#closeApp');
+  let userName = document.querySelector('.user-info p');
+  let addTask = document.querySelector('.nueva-tarea');
+  let newTask = document.querySelector('#nuevaTarea');
+  let pendingTasks = document.querySelector('.tareas-pendientes');
+  let closedTasks = document.querySelector('.tareas-terminadas');
   /* -------------------------------------------------------------------------- */
   /*                          FUNCIÓN 1 - Cerrar sesión                         */
   /* -------------------------------------------------------------------------- */
-
-  btnCerrarSesion.addEventListener('click', function () {
-   
-
-
-
+  closeBtn.addEventListener('click', function () {
+    localStorage.clear();
+    location.replace('./index.html');
   });
-
   /* -------------------------------------------------------------------------- */
   /*                 FUNCIÓN 2 - Obtener nombre de usuario [GET]                */
   /* -------------------------------------------------------------------------- */
 
-  function obtenerNombreUsuario() {
-   
-
-
-
-  };
-
-
   /* -------------------------------------------------------------------------- */
   /*                 FUNCIÓN 3 - Obtener listado de tareas [GET]                */
   /* -------------------------------------------------------------------------- */
-
   function consultarTareas() {
-    
-    
+
+
 
 
 
@@ -50,8 +36,8 @@ window.addEventListener('load', function () {
   /*                    FUNCIÓN 4 - Crear nueva tarea [POST]                    */
   /* -------------------------------------------------------------------------- */
 
-  formCrearTarea.addEventListener('submit', function (event) {
-    
+  addTask.addEventListener('submit', function (e) {
+
 
 
 
@@ -76,8 +62,8 @@ window.addEventListener('load', function () {
   /*                  FUNCIÓN 6 - Cambiar estado de tarea [PUT]                 */
   /* -------------------------------------------------------------------------- */
   function botonesCambioEstado() {
-    
-    
+
+
 
 
 
@@ -88,10 +74,10 @@ window.addEventListener('load', function () {
   /*                     FUNCIÓN 7 - Eliminar tarea [DELETE]                    */
   /* -------------------------------------------------------------------------- */
   function botonBorrarTarea() {
-   
-    
 
-    
+
+
+
 
   };
 
