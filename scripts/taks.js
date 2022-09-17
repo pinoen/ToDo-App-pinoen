@@ -11,6 +11,8 @@ window.addEventListener('load', function () {
   let pendingTasks = document.querySelector('.tareas-pendientes');
   let closedTasks = document.querySelector('.tareas-terminadas');
   let numberClosedTasks = document.querySelector('#cantidad-finalizadas');
+  let contadorClosedTasks = 0;
+  consultarTareas();
   let tareas = [];
   /* -------------------------------------------------------------------------- */
   /*                          FUNCIÓN 1 - Cerrar sesión                         */
@@ -48,7 +50,6 @@ window.addEventListener('load', function () {
       });
     })
   };
-
   /* -------------------------------------------------------------------------- */
   /*                    FUNCIÓN 4 - Crear nueva tarea [POST]                    */
   /* -------------------------------------------------------------------------- */
@@ -73,22 +74,52 @@ window.addEventListener('load', function () {
   /*                  FUNCIÓN 5 - Renderizar tareas en pantalla                 */
   /* -------------------------------------------------------------------------- */
   function renderizarTareas(obj) {
-    pendingTasks.innerHTML += `<li class='tarea'>
-                                <button class='change' id='${obj.id}'>
-                                  <i class='fa-regular fa-circle'></i>
-                                </button>
-                                <div class='description'>
-                                  <p class='nombre'>${obj.description}</p>
-                                  <p class='timestamp'>${obj.createdAt.slice(0, 10)}</p> 
-                                </div>  
-                              </li>`;
+    pendingTasks.innerHTML +=
+      `<li class='tarea'>
+          <button class='change' id='${obj.id}'>
+            <i class='fa-regular fa-circle'></i>
+          </button>
+          <p class='nombre'>${obj.description}</p>
+          <p class='timestamp'>${obj.createdAt.slice(0, 10)}</p>  
+        </li>`;
     botonesCambioEstado();
   };
   /* -------------------------------------------------------------------------- */
   /*                  FUNCIÓN 6 - Cambiar estado de tarea [PUT]                 */
   /* -------------------------------------------------------------------------- */
   function botonesCambioEstado() {
+    let tareasPendientes = document.querySelectorAll('.change');
+    tareasPendientes.forEach(tarea => {
+      tarea.addEventListener('click', (e) => {
+        contadorClosedTasks++;
+        numberClosedTasks.textContent = contadorClosedTasks;
 
+        let task = e.target;
+        task.parentNode.remove();
+
+        fetch(url + '/tasks/' + tarea.getAttribute('id'), {
+          method: 'put',
+          headers: {
+            'Authorization': token,
+          },
+          body: {
+            "completed": true
+          }
+        }).then(res => res.json()).then(data => {
+          closedTasks.innerHTML +=
+            `<li class='tarea'>
+          <div class='hecha'>
+            <i class='fa-regular fa-circle-chech'></i>
+          </div>
+            <p class='nombre'>${data.description}</p>
+            <div class='cambios-estados'>
+              <button class='rehacer'><i class='fa-solid fa-rotate-left'></i></button> 
+              <button class='borrar'><i class='fa-regular fa-trash-can'></i></button>
+            </div>  
+        </li>`;
+        })
+      })
+    })
   }
   /* -------------------------------------------------------------------------- */
   /*                     FUNCIÓN 7 - Eliminar tarea [DELETE]                    */
@@ -96,9 +127,5 @@ window.addEventListener('load', function () {
   function botonBorrarTarea() {
 
 
-
-
-
   };
-
 });
