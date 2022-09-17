@@ -104,3 +104,7 @@ form button:hover{
 .ingresarA a:hover{
     color: var(--azul);
 }
+
+.error{
+    color: red;
+}
