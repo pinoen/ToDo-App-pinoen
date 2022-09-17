@@ -9,7 +9,12 @@ window.addEventListener('load', function () {
         e.preventDefault();
         let email = document.querySelector('#inputEmail').value;
         let password = document.querySelector('#inputPassword').value;
-        realizarLogin(email, password);
+
+        if (email !== '' || password !== '') {
+            realizarLogin(email, password);
+        } else {
+            form.innerHTML += `<small class='error'>${"Completar los campos con sus datos de usuario!"}</small>`;
+        }
     });
     /* -------------------------------------------------------------------------- */
     /*                     FUNCIÓN 2: Realizar el login [POST]                    */
@@ -18,7 +23,7 @@ window.addEventListener('load', function () {
         fetch(url, {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 email: mail,
