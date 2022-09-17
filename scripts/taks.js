@@ -94,8 +94,7 @@ window.addEventListener('load', function () {
         contadorClosedTasks++;
         numberClosedTasks.textContent = contadorClosedTasks;
 
-        let task = e.target;
-        task.parentNode.remove();
+        tarea.parentNode.remove();
 
         fetch(url + '/tasks/' + tarea.getAttribute('id'), {
           method: 'put',
@@ -103,11 +102,11 @@ window.addEventListener('load', function () {
             'Authorization': token,
           },
           body: {
-            "completed": true
+            "completed": true,
           }
         }).then(res => res.json()).then(data => {
           closedTasks.innerHTML +=
-            `<li class='tarea'>
+            `<li class='tarea' id='${data.id}'>
           <div class='hecha'>
             <i class='fa-regular fa-circle-chech'></i>
           </div>
@@ -117,6 +116,14 @@ window.addEventListener('load', function () {
               <button class='borrar'><i class='fa-regular fa-trash-can'></i></button>
             </div>  
         </li>`;
+
+          let borrar = document.querySelectorAll('.borrar');
+          borrar.forEach(tarea => {
+            tarea.addEventListener('click', () => {
+              botonBorrarTarea(tarea.parentNode.parentNode.id);
+              tarea.parentNode.parentNode.remove();
+            })
+          })
         })
       })
     })
@@ -124,8 +131,12 @@ window.addEventListener('load', function () {
   /* -------------------------------------------------------------------------- */
   /*                     FUNCIÓN 7 - Eliminar tarea [DELETE]                    */
   /* -------------------------------------------------------------------------- */
-  function botonBorrarTarea() {
-
-
+  function botonBorrarTarea(id) {
+    fetch(url + '/tasks/' + id, {
+      method: 'delete',
+      headers: {
+        'Authorization': token,
+      },
+    })
   };
 });
