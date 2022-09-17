@@ -13,7 +13,6 @@ window.addEventListener('load', function () {
   let numberClosedTasks = document.querySelector('#cantidad-finalizadas');
   let contadorClosedTasks = 0;
   consultarTareas();
-  let tareas = [];
   /* -------------------------------------------------------------------------- */
   /*                          FUNCIÓN 1 - Cerrar sesión                         */
   /* -------------------------------------------------------------------------- */
@@ -46,7 +45,7 @@ window.addEventListener('load', function () {
       }
     }).then(res => res.json()).then(data => {
       data.forEach(item => {
-        tareas.push(item);
+        renderizarTareas(item);
       });
     })
   };
@@ -90,7 +89,7 @@ window.addEventListener('load', function () {
   function botonesCambioEstado() {
     let tareasPendientes = document.querySelectorAll('.change');
     tareasPendientes.forEach(tarea => {
-      tarea.addEventListener('click', (e) => {
+      tarea.addEventListener('click', () => {
         contadorClosedTasks++;
         numberClosedTasks.textContent = contadorClosedTasks;
 
