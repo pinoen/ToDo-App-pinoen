@@ -1,0 +1,18 @@
+Antes que nada a window agregamos un addEventListener load de modo que una vez que carga la pagina se activa el codigo siguiente.
+
+A - Obtener variables globales.
+  1- Utilizo tag del form.
+  2- Dejo la url base de la api guardada en una variable.
+
+B - FUNCIÓN 1: Escuchamos el submit y preparamos el envío.
+  1- Agregamos addEventListener al form con el evento submit.
+  2- En la callback function incluimos el event para activar luego el preventDefault.
+  3- Declaro variables para guardar los valores de los campos del form usando los id en cada caso (nombre, apellido, email, password, reingreso de password).
+  4- En la variable user guardo los datos del punto anterior en un objeto (user) siguiendo el formato de la api.
+  5- Valido que si el email, la contrasena, y la comparacion de esta ultima y el reingreso de la misma retornan true (funciones declaradas en utils.js), entonces invoco a la function realizarRegister(user).
+  6- En caso de retornar false, la rama else injecta innerHTML al form y agrega tres mensajes de error para advertir al usuario.
+
+C - FUNCIÓN 2: Realizar el signup [POST]
+  1- Utilizo la function fetch con la url base de la api, y como segundo argumento un objeto que contiene el methodo post, dos headers (Content-Type y accept, ambos application/json), y el body que va a a stringify el newUser que se pasa por parametro (que seria el objeto user que declaramos en la function previa).
+  2- then la respuesta la paso a json, then de la data recibida tomo el jwt (token) y lo guardo en el localStorage de modo que el usuario se mantenga logueado mientras dura la sesion.
+  3- Finalmente se reemplaza la pagina actual por mis-tareas.html que ya se renderiza con los datos del nuevo usuario y la configuracion lista para empezar a agregar tareas.

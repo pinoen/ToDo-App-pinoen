@@ -1,0 +1,18 @@
+Antes que nada a window agregamos un addEventListener load de modo que una vez que carga la pagina se activa el codigo siguiente.
+
+A - Obtenemos variables globales
+  1- Utilizo tag del form.
+  2- Dejo la url base de la api mas /users/login (lo que vamos a necesitar para el proceso de login) guardada en una variable.
+
+B- FUNCIÓN 1: Escuchamos el submit y preparamos el envío
+  1- Agregamos addEventListener al form con el evento submit.
+  2- En la callback function incluimos el event para activar luego el preventDefault.
+  3- Declaro variables para guardar los valores de los campos del form usando los id en cada caso (email y password del usuario ya registrado).
+  4- Como un if valido simplemente que los campos no esten vacios. Si fueron completados, se procede a invocar la function realizarLogin(email, password).
+  5- En caso de retornar false, la rama else injecta innerHTML al form y agrega un mensaje de error para advertir al usuario.
+
+C - FUNCIÓN 2: Realizar el login [POST]
+  1- La function realizarLogin ya a recibir dos parametros (mail y pw) que se ingresaran al momento de la invocacion en el paso previo.
+  2- Utilizo la function fetch con la url de la api, y como segundo argumento un objeto que contiene el methodo post, headers (Content-Type:application/json), y el body con el formato previsto por la api y que va a stringify el mail y pw que se pasan por parametro.
+  3- then la respuesta la paso a json, then de la data recibida tomo el jwt (token) y lo guardo en el localStorage de modo que el usuario se mantenga logueado mientras dura la sesion.
+  4- Finalmente se reemplaza la pagina actual por mis-tareas.html que ya se renderiza con los datos del usuario existente y la configuracion tal como que con la ultima sesion.

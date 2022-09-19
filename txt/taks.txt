@@ -1,0 +1,58 @@
+Antes que nada a window agregamos un addEventListener load de modo que una vez que carga la pagina se activa el codigo siguiente.
+
+A - Variables globales y llamado a funciones
+  1- Guardo la url base de la api en una variable.
+  2- Guardo el token (que ya se encuentra en el localStorage) en una variable asi puedo usarlo mas facilmente luego.
+  3- Guardo el boton de cerrar sesion en una variable(closeBtn) para luego darle la funcionalidad necesaria.
+  4- Tomo el html necesario para que se renderice el nombre del usuario en pantalla (userName).
+  5- Guardo el form que contiene el input en una variable (addTask).
+  6- Guardo el valor del input en variable (newTask).
+  7- Guardos el html donde se renderizan las tareas pendientes (tareas nuevas) en una variable (pendingTasks).
+  8- Guardos el html donde se renderizan las tareas cerradas (tareas ya terminadas) en una variable (closedTasks).
+  9- Guardos el html donde se renderizan en pantalla el numero de tareas finalizadas en una variable (numberClosedTasks).
+  10- Inicializo en 0 variable que contabiliza las tareas finalizadas (contadorClosedTasks).
+  11- Invoco function consultarTareas() que consulta a la api las tareas del usuario logueado.
+
+B - FUNCIÓN 1 - Cerrar sesión
+  1- Al boton closeBtn le agrego addEventListener click que una vez que se activa limpia el localStorage y reemplaza la pagina actual por index.html.
+
+C - FUNCIÓN 2 - Obtener nombre de usuario [GET]
+  1- En function obtenerNombreUsuario utilizo metodo fetch con la url base de la api mas /users/getMe segun indica la documentacion, luego como segundo argumento un objeto con method get, headers con Authorization : token (guardado en variable).
+  2- then la respuesta la paso a json, then de la data recibida tomo los valores del firstName y lo concateno con el lastName y se los asigno al userName (con textContent) para que sea renderizado en pantalla.
+  3- Invoco la function para que se active apenas se cargue la pagina.
+
+D - FUNCIÓN 3 - Obtener listado de tareas [GET]
+  1- En la function consultarTareas utilizo metodo fetch con la url base de la api mas /tasks, luego como segundo argumento un objeto con el method get y headers con Authorization : token (guardado en variable).
+  2- then la respuesta la paso a json, then con un forEach itero la data recibida, y cada item lo utilizo como parametro de la function renderizarTareas.
+
+E - FUNCIÓN 4 - Crear nueva tarea [POST]
+  1- A la variable que contiene el form agrego addEventListener submit que se activara con el ckick en el boton Crear Tarea. 
+  2- En la callback function incluimos el event para activar luego el preventDefault.
+  3- Utilizo metodo fetch con la url base de la api mas /tasks, luego como segundo argumento un objeto con el method post, headers con Authorization : token (guardado en variable) y Content-Type:application/json, y body con stringify de la description (igual al valor que tenga el input newTask) y el status completed (que inicialmente sera false).
+  4- then la respuesta la paso a json, then en la data recibida se encuentra la nueva tarea ingresada que la utilizo como parametro de la function renderizarTareas.
+  5- Dejo el input (newTask.value) vacio, listo para recibir nuevas tareas.
+
+F - FUNCIÓN 5 - Renderizar tareas en pantalla
+  1- La function renderizarTareas recibe como parametro un objeto.
+  2- Al innerHTML de la variable que contiene el bloque (<ul>) donde se renderizaran las tareas le agregamos list item (<li>), boton para marcar el item como terminado (<button>), un <i> tag como el icono correspondiente y dos parrafos (<p>), uno para la description y otro para la fecha (a la cual se le aplica un slice donde se toman los primeros 10 caracteres de modo que se renderize solamente ano, mes y dia). 
+  3- Invoco function botonesCambioEstado para dejar disponible la funcionalidad del boton de tarea completada.
+
+  G - FUNCIÓN 6 - Cambiar estado de tarea [PUT]
+    1- Declaro variable tareasPendientes que va a contener un array con todas los botones (icono circular).
+    2- A la variable anterior le aplico un forEach para iterar por cada boton (tarea) y a cada boton le agrego un addEventListener click.
+    3- Por cada evento click aumento en 1 el contadorClosedTasks y actualizo el nuevo resultado en pantalla.
+    4- Al hacer click se elimina el elemento padre del boton (tarea) con el metodo remove().
+    5- Utilizo metodo fetch con url base de la api mas /tasks/ mas el id especifico de la tarea a actualizar (para ello utilizo metodo getAttribute), luego como segundo argumento ingreso un objeto que contiene el method put, headers Authorization:token, y el body completed:true.
+    6- then la respuesta la paso a json, then la data recibida la utilizo para, al agregar innerHTML al bloque (<ul>) closedTasks con los datos de las tareas actualizadas, tomar el id y la description en cada caso. 
+    7- Declaro variable borrar y le asigno todos los botones eliminar de todas las tareas(icono tacho de basura). Entonces queda un array.
+    8- Itero el array con un forEach, y a cada tarea iterada le agrego addEventListener click.
+    9- Invoco la function botonBorrarTarea que va a tener como parametro el id de la tarea en cuesion.
+    10- Elimino el nodo padre del padre donde esta el boton de eliminar para que asi desaparezca de la pantalla.
+
+    H - FUNCIÓN 7 - Eliminar tarea [DELETE]
+      1- Declaro la function botonBorrarTarea que va a tomar como parametro un id.
+      2- Utilizo metodo fetch con la url base de la api mas /tasks/ mas el id especifico de la tarea a eliminar, luego como segundo parametro un objeto con el method delete y el headers Authorization:token.    
+
+
+
+
