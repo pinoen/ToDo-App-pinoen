@@ -1,7 +1,7 @@
 Antes que nada a window agregamos un addEventListener load de modo que una vez que carga la pagina se activa el codigo siguiente.
 
 A - Variables globales y llamado a funciones
-  1- Guardo la url base de la api en una variable.
+  1- Guardo la url base de la api en una variable. **ESTA API FUE CAMBIADA POR UNA VERSION MAS POR PROBLEMAS CON LA ANTERIOR.**
   2- Guardo el token (que ya se encuentra en el localStorage) en una variable asi puedo usarlo mas facilmente luego.
   3- Guardo el boton de cerrar sesion en una variable(closeBtn) para luego darle la funcionalidad necesaria.
   4- Tomo el html necesario para que se renderice el nombre del usuario en pantalla (userName).
@@ -15,6 +15,7 @@ A - Variables globales y llamado a funciones
 
 B - FUNCIÓN 1 - Cerrar sesión
   1- Al boton closeBtn le agrego addEventListener click que una vez que se activa limpia el localStorage y reemplaza la pagina actual por index.html.
+  **AGREGO UNA VENTANA EMERGENTE CONFIRM PARA EL MOMENTO DEL CIERRE DE SESION**
 
 C - FUNCIÓN 2 - Obtener nombre de usuario [GET]
   1- En function obtenerNombreUsuario utilizo metodo fetch con la url base de la api mas /users/getMe segun indica la documentacion, luego como segundo argumento un objeto con method get, headers con Authorization : token (guardado en variable).
@@ -28,9 +29,9 @@ D - FUNCIÓN 3 - Obtener listado de tareas [GET]
 E - FUNCIÓN 4 - Crear nueva tarea [POST]
   1- A la variable que contiene el form agrego addEventListener submit que se activara con el ckick en el boton Crear Tarea. 
   2- En la callback function incluimos el event para activar luego el preventDefault.
-  3- Utilizo metodo fetch con la url base de la api mas /tasks, luego como segundo argumento un objeto con el method post, headers con Authorization : token (guardado en variable) y Content-Type:application/json, y body con stringify de la description (igual al valor que tenga el input newTask) y el status completed (que inicialmente sera false).
+  3- Utilizo metodo fetch con la url base de la api mas /tasks, luego como segundo argumento un objeto con el method post, headers con Authorization : token (guardado en variable) y Content-Type:application/json, y body con stringify de la description (igual al valor que tenga el input newTask)**AGREGRO METODO TRIM PARA BORRAR ESPACIOS EN BLANCO** y el status completed (que inicialmente sera false).
   4- then la respuesta la paso a json, then en la data recibida se encuentra la nueva tarea ingresada que la utilizo como parametro de la function renderizarTareas.
-  5- Dejo el input (newTask.value) vacio, listo para recibir nuevas tareas.
+  5- Dejo el input (newTask.value) vacio, listo para recibir nuevas tareas. **CAMBIO ESTO POR EL METODO reset();
 
 F - FUNCIÓN 5 - Renderizar tareas en pantalla
   1- La function renderizarTareas recibe como parametro un objeto.
