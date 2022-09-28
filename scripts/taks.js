@@ -2,7 +2,7 @@
 /* ------ comienzan las funcionalidades una vez que carga el documento ------ */
 window.addEventListener('load', function () {
   /* ---------------- variables globales y llamado a funciones ---------------- */
-  let url = 'https://ctd-todo-api.herokuapp.com/v1';
+  let url = 'https://ctd-fe2-todo-v2.herokuapp.com/v1';
   let token = localStorage.getItem('token');
   let closeBtn = document.querySelector('#closeApp');
   let userName = document.querySelector('.user-info p');
@@ -12,13 +12,17 @@ window.addEventListener('load', function () {
   let closedTasks = document.querySelector('.tareas-terminadas');
   let numberClosedTasks = document.querySelector('#cantidad-finalizadas');
   let contadorClosedTasks = 0;
+  obtenerNombreUsuario();
   consultarTareas();
   /* -------------------------------------------------------------------------- */
   /*                          FUNCIÓN 1 - Cerrar sesión                         */
   /* -------------------------------------------------------------------------- */
   closeBtn.addEventListener('click', function () {
-    localStorage.clear();
-    location.replace('./index.html');
+    const cerrarSesion = confirm("¿Desea cerrar sesión?");
+    if (cerrarSesion) {
+      localStorage.clear();
+      location.replace('./index.html');
+    }
   });
   /* -------------------------------------------------------------------------- */
   /*                 FUNCIÓN 2 - Obtener nombre de usuario [GET]                */
@@ -33,7 +37,6 @@ window.addEventListener('load', function () {
       userName.textContent = data.firstName + ' ' + data.lastName;
     })
   };
-  obtenerNombreUsuario();
   /* -------------------------------------------------------------------------- */
   /*                 FUNCIÓN 3 - Obtener listado de tareas [GET]                */
   /* -------------------------------------------------------------------------- */
@@ -61,13 +64,13 @@ window.addEventListener('load', function () {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        description: newTask.value,
+        description: newTask.value.trim(),
         completed: false
       })
     }).then(res => res.json()).then(data => {
       renderizarTareas(data);
     })
-    newTask.value = '';
+    addTask.reset();
   });
   /* -------------------------------------------------------------------------- */
   /*                  FUNCIÓN 5 - Renderizar tareas en pantalla                 */
@@ -106,15 +109,14 @@ window.addEventListener('load', function () {
         }).then(res => res.json()).then(data => {
           closedTasks.innerHTML +=
             `<li class='tarea' id='${data.id}'>
-          <div class='hecha'>
-            <i class='fa-regular fa-circle-chech'></i>
-          </div>
-            <p class='nombre'>${data.description}</p>
-            <div class='cambios-estados'>
-              <button class='rehacer'><i class='fa-solid fa-rotate-left'></i></button> 
-              <button class='borrar'><i class='fa-regular fa-trash-can'></i></button>
-            </div>  
-        </li>`;
+              <div class='hecha'>
+                <i class='fa-regular fa-circle-check'></i>
+              </div>
+                <p class='nombre'>${data.description}</p>
+              <div class='cambios-estados'>
+                <button class='borrar'><i class='fa-regular fa-trash-can'></i></button>
+              </div>  
+            </li>`;
 
           let borrar = document.querySelectorAll('.borrar');
           borrar.forEach(tarea => {
