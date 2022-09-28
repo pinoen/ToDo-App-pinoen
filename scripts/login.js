@@ -1,12 +1,13 @@
 window.addEventListener('load', function () {
     /* ---------------------- obtenemos variables globales ---------------------- */
     let form = document.querySelector('form');
-    let url = 'https://ctd-todo-api.herokuapp.com/v1/users/login';
+    let url = 'https://ctd-fe2-todo-v2.herokuapp.com/v1/users/login';
     /* -------------------------------------------------------------------------- */
     /*            FUNCIÓN 1: Escuchamos el submit y preparamos el envío           */
     /* -------------------------------------------------------------------------- */
     form.addEventListener('submit', function (e) {
         e.preventDefault();
+        mostrarSpinner();
         let email = document.querySelector('#inputEmail').value;
         let password = document.querySelector('#inputPassword').value;
 
@@ -14,7 +15,9 @@ window.addEventListener('load', function () {
             realizarLogin(email, password);
         } else {
             form.innerHTML += `<small class='error'>${"Completar los campos con sus datos de usuario!"}</small>`;
+            ocultarSpinner();
         }
+        form.reset();
     });
     /* -------------------------------------------------------------------------- */
     /*                     FUNCIÓN 2: Realizar el login [POST]                    */
@@ -29,9 +32,18 @@ window.addEventListener('load', function () {
                 email: mail,
                 password: pw
             })
-        }).then(res => res.json()).then(data => {
+        }).then(res => {
+            if (res.ok !== true) {
+                alert("Alguno de los datos es incorrecto.");
+            }
+            return res.json();
+        }).then(data => {
             localStorage.setItem('token', data.jwt);
+            ocultarSpinner();
             location.replace('./mis-tareas.html');
+        }).catch(err => {
+            alert("Promesa rechazada!");
+            ocultarSpinner();
         })
     };
 });
