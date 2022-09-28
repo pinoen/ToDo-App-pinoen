@@ -1,7 +1,7 @@
 window.addEventListener('load', function () {
     /* ---------------------- obtenemos variables globales ---------------------- */
     let form = document.querySelector('form');
-    let url = 'https://ctd-todo-api.herokuapp.com/v1/users';
+    let url = 'https://ctd-fe2-todo-v2.herokuapp.com/v1/users';
     /* -------------------------------------------------------------------------- */
     /*            FUNCIÓN 1: Escuchamos el submit y preparamos el envío           */
     /* -------------------------------------------------------------------------- */
@@ -25,6 +25,7 @@ window.addEventListener('load', function () {
                 <small class='error'>${"Todos los campos deben completarse con datos validos."}</small>
                 <small class='error'>${"La contrasena debe tener entre 10 y 15 dígitos alfanuméricos y 1 carácter especial (*,$,&)"}</small>`;
         }
+        form.reset();
     });
     /* -------------------------------------------------------------------------- */
     /*                    FUNCIÓN 2: Realizar el signup [POST]                    */
@@ -37,9 +38,16 @@ window.addEventListener('load', function () {
                 'accept': 'application/json'
             },
             body: JSON.stringify(newUser)
-        }).then(res => res.json()).then(data => {
+        }).then(res => {
+            if (res.ok !== true) {
+                alert("Alguno de los datos es incorrecto.");
+            }
+            return res.json();
+        }).then(data => {
             localStorage.setItem('token', data.jwt);
             location.replace('./mis-tareas.html');
+        }).catch(err => {
+            alert("Promesa rechazada!");
         })
     };
 });
