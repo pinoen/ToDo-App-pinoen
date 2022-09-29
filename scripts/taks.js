@@ -18,11 +18,24 @@ window.addEventListener('load', function () {
   /*                          FUNCIÓN 1 - Cerrar sesión                         */
   /* -------------------------------------------------------------------------- */
   closeBtn.addEventListener('click', function () {
-    const cerrarSesion = confirm("¿Desea cerrar sesión?");
-    if (cerrarSesion) {
-      localStorage.clear();
-      location.replace('./index.html');
-    }
+    Swal.fire({
+      title: 'Estas seguro de cerrar la sesion?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, cerrar sesion!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Sesion cerrada!',
+          'La sesion ha sido cerrada exitosamente.',
+          'success'
+        )
+        localStorage.clear();
+        location.replace('./index.html');
+      }
+    })
   });
   /* -------------------------------------------------------------------------- */
   /*                 FUNCIÓN 2 - Obtener nombre de usuario [GET]                */
@@ -121,6 +134,23 @@ window.addEventListener('load', function () {
           let borrar = document.querySelectorAll('.borrar');
           borrar.forEach(tarea => {
             tarea.addEventListener('click', () => {
+              Swal.fire({
+                title: 'Esta seguro de borrar esta tarea?',
+                text: "Se eliminara de manera permanente!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  Swal.fire(
+                    'Eliminado!',
+                    'La tarea ha sido eliminada.',
+                    'success'
+                  )
+                }
+              })
               botonBorrarTarea(tarea.parentNode.parentNode.id);
               tarea.parentNode.parentNode.remove();
             })
