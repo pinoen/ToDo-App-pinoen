@@ -42,7 +42,7 @@ window.addEventListener('load', function () {
             ocultarSpinner();
             location.replace('./mis-tareas.html');
         }).catch(err => {
-            alert("Promesa rechazada!");
+            Swal.fire('Promesa rechazada!');
             ocultarSpinner();
         })
     };

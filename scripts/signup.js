@@ -47,7 +47,7 @@ window.addEventListener('load', function () {
             localStorage.setItem('token', data.jwt);
             location.replace('./mis-tareas.html');
         }).catch(err => {
-            alert("Promesa rechazada!");
+            Swal.fire('Promesa rechazada!');
         })
     };
 });
